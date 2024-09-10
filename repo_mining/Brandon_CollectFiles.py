@@ -4,8 +4,8 @@ import csv
 
 import os
 
-if not os.path.exists("data"):
- os.makedirs("data")
+if not os.path.exists("Brandon_data"):
+ os.makedirs("Brandon_data")
 
 # GitHub Authentication function
 def github_auth(url, lsttoken, ct):
@@ -27,6 +27,7 @@ def github_auth(url, lsttoken, ct):
 def countfiles(dictfiles, lsttokens, repo):
     ipage = 1  # url page counter
     ct = 0  # token counter
+    source_files = ['.java', '.kt', '.cpp', '.c', '.cmake']  # Relevant source file extensions
 
     try:
         # loop though all the commit pages until the last returned empty page
@@ -47,7 +48,8 @@ def countfiles(dictfiles, lsttokens, repo):
                 filesjson = shaDetails['files']
                 for filenameObj in filesjson:
                     filename = filenameObj['filename']
-                    dictfiles[filename] = dictfiles.get(filename, 0) + 1
+                    if any(filename.endswith(ext) for ext in source_files):
+                        dictfiles[filename] = dictfiles.get(filename, 0) + 1
                     print(filename)
             ipage += 1
     except:
@@ -72,7 +74,7 @@ print('Total number of files: ' + str(len(dictfiles)))
 
 file = repo.split('/')[1]
 # change this to the path of your file
-fileOutput = 'data/file_' + file + '.csv'
+fileOutput = 'Brandon_data/file_' + file + '.csv'
 rows = ["Filename", "Touches"]
 fileCSV = open(fileOutput, 'w')
 writer = csv.writer(fileCSV)
