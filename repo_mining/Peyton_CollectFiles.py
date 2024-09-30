@@ -78,13 +78,26 @@ fileCSV = open(fileOutput, 'w')
 writer = csv.writer(fileCSV)
 writer.writerow(rows)
 
-bigcount = None
-bigfilename = None
+# Initialize variables to track the highest count and corresponding filename
+bigcount = None  # This variable will hold the maximum count of touches
+bigfilename = None  # This variable will hold the filename with the maximum count
+
+# Loop through the dictionary of filenames and their associated counts
 for filename, count in dictfiles.items():
+    # Create a list containing the filename and its count
     rows = [filename, count]
+    
+    # Write the filename and count to a CSV file using the writer object
     writer.writerow(rows)
+
+    # Check if the current count is greater than the previously recorded maximum count
     if bigcount is None or count > bigcount:
-        bigcount = count
-        bigfilename = filename
+        # Update bigcount and bigfilename with the current count and filename
+        bigcount = count  # Set the new maximum count
+        bigfilename = filename  # Set the filename with the new maximum count
+
+# Close the CSV file after writing all rows
 fileCSV.close()
+
+# Print a message indicating which file has the highest count of touches
 print('The file ' + bigfilename + ' has been touched ' + str(bigcount) + ' times.')
