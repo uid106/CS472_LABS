@@ -5,17 +5,14 @@ import random
 
 # Start Reading in Data
 def readIn(path):
-    # Initialize Variable
-    data = []
     with open(path, 'r') as csvfile:
-        # Start Reader
-        reader = csv.reader(csvfile)
-        # Skip Line 1
-        next(reader)
-        for row in reader:
-            filename, author, date = row
-            # String to Date & Time for "Weeks" Y axis
-            data.append([filename, author, datetime.strptime(date, '%Y-%m-%dT%H:%M:%SZ')])
+        # Use DictReader for better readability
+        reader = csv.DictReader(csvfile)
+        # Build the data list using a list comprehension
+        data = [
+            [row['filename'], row['author'], datetime.strptime(row['date'], '%Y-%m-%dT%H:%M:%SZ')]
+            for row in reader
+        ]
     return data
 
 def createPlot(data):
