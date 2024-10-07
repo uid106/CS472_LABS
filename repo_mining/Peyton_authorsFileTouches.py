@@ -8,18 +8,40 @@ if not os.path.exists("data"):
  os.makedirs("data")
 
 # GitHub Authentication function
-def github_auth(url, lsttoken, ct):
-    jsonData = None
+def github_auth(url, token_list, current_token_index):
+
+   # Function to authenticate with GitHub API using a list of tokens.
+    
+   # Args:
+   #     url (str): The GitHub API URL to make the request to.
+   #    token_list (list): A list of authentication tokens.
+   #     current_token_index (int): The current index of the token being used.
+        
+   # Returns:
+   #     tuple: Contains the JSON response data (if available) and the updated token index.
+
+    json_data = None  # Initialize the response data
     try:
-        ct = ct % len(lstTokens)
-        headers = {'Authorization': 'Bearer {}'.format(lsttoken[ct])}
-        request = requests.get(url, headers=headers)
-        jsonData = json.loads(request.content)
-        ct += 1
+        # Cycle through the list of tokens using modulus to avoid index out of range
+        current_token_index = current_token_index % len(token_list)
+        
+        # Set up the authorization header using the current token
+        headers = {'Authorization': f'Bearer {token_list[current_token_index]}'}
+        
+        # Make the request to the GitHub API
+        response = requests.get(url, headers=headers)
+        
+        # Parse the response content as JSON
+        json_data = response.json()
+        
+        # Increment the token index for the next call
+        current_token_index += 1
     except Exception as e:
-        pass
-        print(e)
-    return jsonData, ct
+        # Handle any exceptions, e.g., network errors
+        print(f"An error occurred: {e}")
+    
+    # Return the response data and the updated token index
+    return json_data, current_token_index
 
 # Mapping of Language to Extension Type
 mapping = {'Java': ['.java'],'Kotlin': ['.kt'],'C++': ['.cpp', '.h'],'C': ['.c', '.h'],'CMake': ['.cmake', 'CMakeLists.txt']}
