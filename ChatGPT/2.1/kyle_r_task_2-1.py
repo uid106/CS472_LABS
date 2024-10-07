@@ -1,6 +1,7 @@
 # My tests for the flask counter from the tdd lab
 """
 Test Cases for Counter Web Service
+
 Create a service that can keep a track of multiple counters
 - API must be RESTful - see the status.py file. Following these guidelines, you can make assumptions about
 how to call the web service and assert what it should return.
