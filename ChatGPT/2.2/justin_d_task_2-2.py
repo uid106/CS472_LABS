@@ -11,6 +11,7 @@ how to call the web service and assert what it should return.
 - The service must be able to read the counter
 """
 
+
 import pytest
 
 # we need to import the unit under test - counter
@@ -27,7 +28,12 @@ def client():
 
 @pytest.mark.usefixtures("client")
 class TestCounterEndPoints:
-    """Test cases for Counter-related endpoints"""
+    """
+    TestCounterEndPoints contains tests for various operations on counters, including creation, 
+    updating, reading, and deletion. It verifies both successful operations and edge cases, 
+    such as handling non-existent or duplicate counters.
+    """
+
 
     def test_create_a_counter(self, client):
         """It should create a counter"""
@@ -77,7 +83,14 @@ class TestCounterEndPoints:
 
 
     def test_get_non_existent_counter(self, client):
-        """It should return a 404 NOT FOUND for a non-existent counter"""
+        """
+        It should return a 404 NOT FOUND for a non-existent counter.
+
+        This test ensures that the service handles cases where a client attempts 
+        to read a counter that does not exist, returning an appropriate error message 
+        and status code. This is important for ensuring that clients get meaningful feedback 
+        when making invalid requests.
+        """
         counter_name = 'non_existent_counter'  # Name of the counter that does not exist
 
         # Attempt to retrieve the non-existent counter
